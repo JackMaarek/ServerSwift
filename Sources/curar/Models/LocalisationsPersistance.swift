@@ -23,26 +23,26 @@ extension Location {
         }
     }
         
-        static func save(_ Location: Location, to database: Database, callback:
-            @escaping(_ Location: Location?, _ error: Error?) -> Void){
-            database.create(Location){ Location, error in
-                guard let Location = Location else{
+        static func save(_ location: Location, to database: Database, callback:
+            @escaping(_ location: Location?, _ error: Error?) -> Void){
+            database.create(location){ document, error in
+                guard let document = document else{
                     Log.error("Error creating new user: \(String(describing: error))")
                     return callback(nil, error)
                 }
-                database.retrieve(Location.id, callback: callback)
+                database.retrieve(document.id, callback: callback)
             }
             
         }
         
-        static func delete(_ LocationID: String, from database: Database, callback:
+        static func delete(_ locationID: String, from database: Database, callback:
             @escaping(_ error: Error?)-> Void){
-            database.retrieve(LocationID) { (Location: Location?, error: CouchDBError?) in
-                guard let Location = Location, let LocationRev = Location._rev else{
+            database.retrieve(locationID) { (location: Location?, error: CouchDBError?) in
+                guard let location = location, let locationRev = location._rev else{
                     Log.error("Error creating new document: \(String(describing: error))")
                     return callback(error)
                 }
-                database.delete(LocationID, rev: LocationRev, callback: callback)
+                database.delete(locationID, rev: locationRev, callback: callback)
             }
         }
         

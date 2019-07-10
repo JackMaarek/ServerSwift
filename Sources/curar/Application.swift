@@ -15,16 +15,29 @@ import SwiftJWT
 public class App{
     var client: CouchDBClient?
     var database: Database?
-    
     let router = Router()
     
     private func postInit() {
         initializeJWTRoutes(app: self)
-        connectionToDatabase()
+        
+        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false,username: "CurarDB", password: "CurarPass" )
+        client = CouchDBClient(connectionProperties: connectionProperties)
+        client!.retrieveDB("Locations"){ database, error in
+            guard let database = database else {
+                Log.info("Could not retrieve Location database :"
+                    + "\(String(describing: error?.localizedDescription))"
+                    + "- attempting to create new one")
+                self.createNewDatabase()
+                return
+            }
+            Log.info("Locations database located - loading...")
+            self.finalizeRoutes(with: database)
+        }
+        
     }
     
     func connectionToDatabase() {
-        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false)
+        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false, username: "CurarDB", password: "CurarPass" )
         client = CouchDBClient(connectionProperties: connectionProperties)
         client!.retrieveDB("Locations"){ database, error in
             guard let database = database else {
