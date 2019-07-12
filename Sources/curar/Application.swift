@@ -19,45 +19,33 @@ public class App{
     
     private func postInit() {
         initializeJWTRoutes(app: self)
-        
-        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false,username: "CurarDB", password: "CurarPass" )
-        client = CouchDBClient(connectionProperties: connectionProperties)
-        client!.retrieveDB("Locations"){ database, error in
-            guard let database = database else {
-                Log.info("Could not retrieve Location database :"
-                    + "\(String(describing: error?.localizedDescription))"
-                    + "- attempting to create new one")
-                self.createNewDatabase()
-                return
-            }
-            Log.info("Locations database located - loading...")
-            self.finalizeRoutes(with: database)
-        }
-        
+        connectionToDatabase()
     }
     
-    func connectionToDatabase() {
-        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false, username: "CurarDB", password: "CurarPass" )
+    
+    private func connectionToDatabase() {
+        let connectionProperties = ConnectionProperties(host: "localhost", port: 5984, secured: false)
         client = CouchDBClient(connectionProperties: connectionProperties)
-        client!.retrieveDB("Locations"){ database, error in
+        client!.retrieveDB("locations"){ database, error in
             guard let database = database else {
-                Log.info("Could not retrieve Location database :"
+                Log.info("Could not retrieve Location dabase :"
                     + "\(String(describing: error?.localizedDescription))"
-                    + "- attempting to create new one")
+                    + "- attempting to create new one.")
                 self.createNewDatabase()
                 return
             }
-            Log.info("Locations database located - loading...")
+            Log.info("Locations database locates - loading...")
             self.finalizeRoutes(with: database)
+            
         }
     }
     
     private func createNewDatabase(){
-        client?.createDB("Location"){ database, error in
-            guard let database = database else{
-                Log.error("Could not create database"
-                    + "(\(String(describing: error?.localizedDescription))"
-                    + "- Locations database not created")
+        client?.createDB("locations") { database, error in
+            guard let database = database else {
+                Log.error("Could not create new database: "
+                    + "(\(String(describing: error?.localizedDescription)) "
+                    + "- Location routes not created")
                 return
             }
             self.finalizeRoutes(with: database)

@@ -10,8 +10,8 @@ import CouchDB
 struct Location : Document {
     let _id: String?
     var _rev: String?
-    var username: String?
-    var identifierRole: String?
+    var username: String
+    var identifierRole: String
     var coordinate: [Coordinate]?
     
 }

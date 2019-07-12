@@ -30,6 +30,7 @@ extension Location {
                     Log.error("Error creating new user: \(String(describing: error))")
                     return callback(nil, error)
                 }
+                
                 database.retrieve(document.id, callback: callback)
             }
             
