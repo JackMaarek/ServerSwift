@@ -7,7 +7,7 @@
 
 import SwiftJWT
 import Kitura
-
+// TypeSafe structure to retrieve jwt
 struct TypeSafeJWT<C: Claims>: TypeSafeMiddleware {
     let jwt: JWT<C>
     static func handle(request: RouterRequest, response: RouterResponse, completion: @escaping (TypeSafeJWT?, RequestError?) -> Void) {

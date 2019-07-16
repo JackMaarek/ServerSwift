@@ -34,7 +34,7 @@ private func getLocations(completion: @escaping ([Location]?, RequestError?) -> 
     }
     
 }
-
+// Add Locations Handler
 private func addLocation(location: Location, completion: @escaping (Location?, RequestError?) -> Void){
     guard let database =  database else {
         return completion(nil, .internalServerError)
@@ -43,7 +43,7 @@ private func addLocation(location: Location, completion: @escaping (Location?, R
         return completion(newLocation, error as? RequestError)
     }
 }
-
+// Delete Locations Handler
 private func deleteLocation(id: String, completion: @escaping (_ id:String, RequestError?) -> Void){
     guard let database =  database else {
         return completion(id, .internalServerError)

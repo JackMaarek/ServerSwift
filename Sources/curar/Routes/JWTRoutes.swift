@@ -10,7 +10,8 @@ import KituraContracts
 import SwiftJWT
 
 func initializeJWTRoutes(app: App){
-    //Send JWT
+    
+    //Route for jwt with UserCredentials informations
     app.router.post("/jwtlogin"){ request, response, next in
         let credentials = try request.read(as: UserCredentials.self)
         let myClaims = ClaimsStandardJWT(iss: "Users", sub: credentials.username + credentials.password + credentials.email, exp: Date(timeIntervalSinceNow: 3600))
@@ -34,7 +35,7 @@ func initializeJWTRoutes(app: App){
 //        response.send(jwt)
 //        next()
 //    }
-    
+    // Route to retrieve jwt and grant access
     app.router.get("/jwtCodable", handler: app.typeSafeHandler)
 }
 
