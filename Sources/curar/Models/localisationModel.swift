@@ -13,7 +13,6 @@ struct Location : Document {
     var username: String
     var identifierRole: String
     var coordinate: [Coordinate]?
-    
 }
 
 struct Coordinate : Codable {

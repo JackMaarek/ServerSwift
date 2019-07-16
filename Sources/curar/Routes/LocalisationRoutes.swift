@@ -19,7 +19,7 @@ func initializeLocalisationRoutes(app: App){
     
     app.router.get("/locations", handler: getLocations)
     app.router.post("/locations", handler: addLocation)
-//    app.router.post("/locations", handler: deleteLocation)
+    app.router.post("/erase_locations", handler: deleteLocation)
     
 }
 
@@ -44,11 +44,11 @@ private func addLocation(location: Location, completion: @escaping (Location?, R
     }
 }
 
-//private func deleteLocation(id: String, completion: @escaping (_ id:String, RequestError?) -> Void){
-//    guard let database =  database else {
-//        return completion(id, .internalServerError)
-//    }
-//    Location.Persistance.delete(id, from: database){ error in
-//        return completion(id, error as? RequestError)
-//    }
-//}
+private func deleteLocation(id: String, completion: @escaping (_ id:String, RequestError?) -> Void){
+    guard let database =  database else {
+        return completion(id, .internalServerError)
+    }
+    Location.Persistance.delete(id, from: database){ error in
+        return completion(id, error as? RequestError)
+    }
+}
